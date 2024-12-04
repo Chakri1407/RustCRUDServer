@@ -1,9 +1,11 @@
+// Import required dependencies for PostgreSQL database connection, 
+// error handling, TCP networking, I/O operations, and environment variable management
 use postgres::{Client,NoTls};
 use postgres::Error as PostgresError;
 use std::net::{TcpListener,TcpStream};
 use std::io::{Read,Write};
 use std::env;
-use dotenv::dotenv;
+use dotenv::dotenv; 
 
 #[macro_use]
 extern crate serde_derive;
@@ -23,10 +25,12 @@ const INTERNAL_SERVER_ERROR:&str = "HTTP/1.1 500 Internal Server Error\r\n\r\n";
 
 //main function 
 fn main() {
-    // Load .env file
+    // Load the .env file to access environment variables.
+    // If the .env file doesn't exist or fails to load, `dotenv().ok()` ensures the program continues without crashing.
     dotenv().ok();
     
-    // Get the database URL from environment variable
+    // Retrieve the database URL from the environment variable `DATABASE_URL`.
+    // If the variable is not set, print an error message and exit the program.
     let database_url = match env::var("DATABASE_URL") {
         Ok(url) => url,
         Err(_) => {

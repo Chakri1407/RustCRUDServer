@@ -186,7 +186,7 @@ fn handle_delete_request(request: &str, db_url: &str) -> (String, String) {
         (Ok(id), Ok(mut client)) => {
              // Delete the user from the database 
             let rows_affected = client.execute(
-                "DELETE FROM users WHERE id = $1", //// SQL query for deletion
+                "DELETE FROM users WHERE id = $1", // SQL query for deletion
                  &[&id]  // Bind the user ID to the query
                 ) 
                  .unwrap();

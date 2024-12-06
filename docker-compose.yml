@@ -1,14 +1,14 @@
 services:
-  rustapp:
-    container_name: rustapp
-    image: solulabimage/rustapp:1.0.0  # Docker image names should be lowercase
+  rustcrudapp:
+    container_name: rustcrudapp
+    image: solulabproject/rustapp:1.0.0  
     build:
       context: .
       dockerfile: Dockerfile
       args:
         DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
     environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres  # Add this line
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres  
     ports:
       - '8080:8080'
     depends_on:

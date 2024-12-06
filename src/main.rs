@@ -14,7 +14,7 @@ extern crate serde_derive;
 #[derive(Serialize,Deserialize)]
 //Model : User struct with id,name, email
 struct User {
-    id: i32,
+    id: Option<i32>,
     name: String,
     email: String,
 }

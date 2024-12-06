@@ -62,14 +62,15 @@ cargo run
 Here are sample CRUD API requests demonstrated through Postman:
 
 1. Create a User (```POST /users```)
-
+![1.](https://github.com/Chakri1407/RustCRUDServer/blob/master/ss/post_request.png)
 2. Retrieve All Users (```GET /users```)
-
+![2.](https://github.com/Chakri1407/RustCRUDServer/blob/master/ss/get_all_request.png)
 3. Retrieve a User by ID (```GET /users/{id}```)
-
+![3.](https://github.com/Chakri1407/RustCRUDServer/blob/master/ss/get_request.png)
 4. Update a User (```PUT /users/{id}```)
-
+![4.](https://github.com/Chakri1407/RustCRUDServer/blob/master/ss/put_request.png)
 5. Delete a User (```DELETE /users/{id}```)
+![5.](https://github.com/Chakri1407/RustCRUDServer/blob/master/ss/delete_request.png)
 
 ## Docker Configuration
 ### Docker Compose

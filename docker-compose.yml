@@ -1,18 +1,19 @@
-version: '3.9'
-
 services:
   rustapp:
     container_name: rustapp
-    image: SolulabImage/rustapp:1.0.0
-    build: 
+    image: solulabimage/rustapp:1.0.0  # Docker image names should be lowercase
+    build:
       context: .
       dockerfile: Dockerfile
       args:
         DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres  # Add this line
     ports:
       - '8080:8080'
     depends_on:
       - db
+
   db:
     container_name: db
     image: postgres:13.3

@@ -1,4 +1,5 @@
 # Rust CRUD API 
+![Rust](https://img.shields.io/badge/language-Rust-%23DE4C36) 
 
 This project demonstrates a simple CRUD (Create, Read, Update, Delete) server built in Rust using TCP networking, PostgreSQL as the database, and Docker for containerization.
 
@@ -17,18 +18,23 @@ This project demonstrates a simple CRUD (Create, Read, Update, Delete) server bu
 
 ## Prerequisites
 
-- Rust (1.75 or later) 
-- Docker and Docker Compose
-- PostgreSQL
-- Git
+
+- 🦀 Rust (1.75 or later)
+- 🐳 Docker and Docker Compose
+- 🗃️ PostgreSQL
+- 🌱 Git
 
 ## API Endpoints
 
-- `POST /users` - Create a new user
-- `GET /users` - Retrieve all users
-- `GET /users/{id}` - Retrieve a specific user
-- `PUT /users/{id}` - Update a user
-- `DELETE /users/{id}` - Delete a user
+
+| HTTP Method | Endpoint        | Description            |
+|-------------|-----------------|------------------------|
+| POST        | `/users`        | Create a new user      |
+| GET         | `/users`        | Retrieve all users     |
+| GET         | `/users/{id}`   | Retrieve a specific user |
+| PUT         | `/users/{id}`   | Update a user          |
+| DELETE      | `/users/{id}`   | Delete a user          |
+
 
 ## Setup and Installation
 
@@ -52,6 +58,19 @@ docker-compose up -d
 ```
 cargo run
 ``` 
+## Postman Collection 🌐
+Here are sample CRUD API requests demonstrated through Postman:
+
+1. Create a User (```POST /users```)
+
+2. Retrieve All Users (```GET /users```)
+
+3. Retrieve a User by ID (```GET /users/{id}```)
+
+4. Update a User (```PUT /users/{id}```)
+
+5. Delete a User (```DELETE /users/{id}```)
+
 ## Docker Configuration
 ### Docker Compose
 The application uses Docker Compose to manage two services:

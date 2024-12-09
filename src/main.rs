@@ -1,5 +1,18 @@
-// Import required dependencies for PostgreSQL database connection, 
-// error handling, TCP networking, I/O operations, and environment variable management
+//! # Title: Simple HTTP Server with PostgreSQL Integration
+//! This module implements a simple HTTP server for user management with a PostgreSQL database.
+//!
+//! ## Features
+//! - User CRUD operations (`POST`, `GET`, `PUT`, `DELETE`).
+//! - JSON-based HTTP responses.
+//! - Environment variable management for configuration.
+//!
+//! ## Author
+//! ChakravarthyN 
+//!
+//! ## Constants
+//! - `OK_RESPONSE`: HTTP 200 OK response with JSON content.
+//! - `NOT_FOUND`: HTTP 404 Not Found response.
+//! - `INTERNAL_SERVER_ERROR`: HTTP 500 Internal Server Error response.
 use postgres::{Client,NoTls};
 use postgres::Error as PostgresError;
 use std::net::{TcpListener,TcpStream};
@@ -10,28 +23,36 @@ use dotenv::dotenv;
 #[macro_use]
 extern crate serde_derive;
 
-
+/// # Model: User
+/// Represents a user in the system.
+///
+/// ## Fields
+/// - `id`: Optional user ID (primary key in the database).
+/// - `name`: Name of the user.
+/// - `email`: Email address of the user.
 #[derive(Serialize,Deserialize)]
-//Model : User struct with id,name, email
 struct User {
     id: Option<i32>,
     name: String,
     email: String,
 }
 
-///////////////////////////////CONSTANTS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
- 
-// Constants for HTTP responses: 200 OK with JSON, 404 Not Found, and 500 Internal Server Error.
+/// Constants for HTTP responses.
 const OK_RESPONSE:&str = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n";
 const NOT_FOUND:&str = "HTTP/1.1 404 Not Found\r\n\r\n";
 const INTERNAL_SERVER_ERROR:&str = "HTTP/1.1 500 Internal Server Error\r\n\r\n";
 
-///////////////////////////// MAIN FUNCTION \\\\\\\\\\\\\\\\\\\\\\\\\\ 
+/// # Main Function
+/// Initializes the server and handles incoming client requests.
+///
+/// ## Steps
+/// 1. Loads environment variables from a `.env` file.
+/// 2. Retrieves the database URL from the environment.
+/// 3. Sets up the PostgreSQL database.
+/// 4. Starts the TCP server and listens on port 8080.
 fn main() {
-    // Load the .env file to access environment variables.`dotenv().ok()` ensures the program continues without crashing.
     dotenv().ok();
     
-    // Retrieve the database URL from the environment variable `DATABASE_URL`. if not set print an error message and exit the program.
     let database_url = match env::var("DATABASE_URL") {
         Ok(url) => url,
         Err(_) => {
@@ -40,14 +61,11 @@ fn main() {
         }
     };
 
-    //set database
     if let Err(e) = set_database(&database_url) { 
-    // here if let Err(e) checks if the operation failed and sets up the custom set_database function
         println!("Error setting up database: {}", e);
         return;
     }
 
-    //start server and print port
     let listener = TcpListener::bind(format!("0.0.0.0:8080")).unwrap();
     // Binds a TCP listener to the specified address and port and Dynamically creates the address string, program stops if the listener cannot bind.
     println!("Server listening on port 8080");
@@ -67,7 +85,15 @@ fn main() {
     }
 }
 
-// handle_client function 
+/// # Function: handle_client
+/// Handles an individual client connection.
+///
+/// ## Parameters
+/// - `stream`: TCP connection stream from the client.
+/// - `db_url`: Database connection string.
+///
+/// ## Behavior
+/// Reads the client request, determines the HTTP method, and invokes the appropriate handler function.  
 fn handle_client(mut stream: TcpStream, db_url: &str) {
 // Here TCPStream means the Clients connection and it is mutable function reads from and writes to the stream.
     let mut buffer = [0; 1024]; // A fixed-size array to store raw data read from the stream
@@ -199,7 +225,19 @@ fn handle_delete_request(request: &str, db_url: &str) -> (String, String) {
     }
 }
 
-// set database function
+/// # Function: set_database
+/// Sets up the PostgreSQL database.
+///
+/// ## Parameters
+/// - `db_url`: Database connection string.
+///
+/// ## Behavior
+/// - Creates a connection to the database.
+/// - Ensures the `users` table exists.
+///
+/// ## Returns
+/// - `Ok(())` if the setup is successful.
+/// - `PostgresError` if there is an issue with the database. 
 fn set_database(db_url: &str) -> Result<(), PostgresError> {
     //Connect to database
     let mut client = Client::connect(db_url, NoTls)?;
@@ -214,8 +252,8 @@ fn set_database(db_url: &str) -> Result<(), PostgresError> {
     Ok(()) 
 }
 
-//get_id function 
-// Extracts the ID from the request URL by splitting the string at '/' and retrieving the third segment.
+/// get_id function 
+/// Extracts the ID from the request URL by splitting the string at '/' and retrieving the third segment.
 fn get_id(request: &str) -> &str {
     request
         .split("/") // Split the request URL into parts using '/' as the delimiter
@@ -226,8 +264,8 @@ fn get_id(request: &str) -> &str {
         .unwrap_or_default() // Use an empty string if no valid part exists
 }
 
-//deserialize user from request body with the id 
-// Extracts the JSON body from the HTTP request and deserializes it into a `User` struct.
+/// Deserialize user from request body with the id 
+//  Extracts the JSON body from the HTTP request and deserializes it into a `User` struct.
 fn get_user_request_body(request: &str) -> Result<User, serde_json::Error> {
     serde_json::from_str(
         &request

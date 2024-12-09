@@ -8,11 +8,7 @@
 //!
 //! ## Author
 //! ChakravarthyN 
-//!
-//! ## Constants
-//! - `OK_RESPONSE`: HTTP 200 OK response with JSON content.
-//! - `NOT_FOUND`: HTTP 404 Not Found response.
-//! - `INTERNAL_SERVER_ERROR`: HTTP 500 Internal Server Error response.
+
 use postgres::{Client,NoTls};
 use postgres::Error as PostgresError;
 use std::net::{TcpListener,TcpStream};
@@ -37,7 +33,10 @@ struct User {
     email: String,
 }
 
-/// Constants for HTTP responses.
+/// ## Constants
+/// - `OK_RESPONSE`: HTTP 200 OK response with JSON content.
+/// - `NOT_FOUND`: HTTP 404 Not Found response.
+/// - `INTERNAL_SERVER_ERROR`: HTTP 500 Internal Server Error response. 
 const OK_RESPONSE:&str = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n";
 const NOT_FOUND:&str = "HTTP/1.1 404 Not Found\r\n\r\n";
 const INTERNAL_SERVER_ERROR:&str = "HTTP/1.1 500 Internal Server Error\r\n\r\n";
@@ -52,7 +51,6 @@ const INTERNAL_SERVER_ERROR:&str = "HTTP/1.1 500 Internal Server Error\r\n\r\n";
 /// 4. Starts the TCP server and listens on port 8080.
 fn main() {
     dotenv().ok();
-    
     let database_url = match env::var("DATABASE_URL") {
         Ok(url) => url,
         Err(_) => {
@@ -268,9 +266,13 @@ fn get_id(request: &str) -> &str {
 //  Extracts the JSON body from the HTTP request and deserializes it into a `User` struct.
 fn get_user_request_body(request: &str) -> Result<User, serde_json::Error> {
     serde_json::from_str(
+
+        
         &request
             .split("\r\n\r\n") // Split the HTTP request into headers and body using the blank line delimiter
             .last() // Retrieve the last part, which is the body
             .unwrap_or_default(), // Use an empty string if no body exists
     )
+
+
 }

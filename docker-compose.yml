@@ -1,16 +1,16 @@
 services:
   rustcrudapp:
     container_name: rustcrudapp
-    image: solulabproject/rustapp:1.0.0  
+    image: solulabproject/rustapp:1.0.0
     build:
       context: .
       dockerfile: Dockerfile
       args:
         DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
     environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres  
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
     ports:
-      - '8080:8080'
+      - "8080:8080"
     depends_on:
       - db
 
@@ -22,10 +22,9 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-  
+
 volumes:
   pgdata: {}
-  
